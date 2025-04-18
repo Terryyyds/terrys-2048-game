@@ -1,0 +1,6 @@
+---
+description: 
+globs: *.tsx
+alwaysApply: false
+---
+You can import { cn } function from [cn.ts](mdc:src/utils/cn.ts) for class name merging.

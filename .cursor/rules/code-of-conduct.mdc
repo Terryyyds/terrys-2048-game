@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Always read [CODE_OF_CONDUCT.md](mdc:CODE_OF_CONDUCT.md) actively before writing code.

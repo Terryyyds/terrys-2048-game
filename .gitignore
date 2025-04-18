@@ -1,0 +1,28 @@
+# DELETE THIS FILE BEFORE USING THIS TEMPLATE
+pnpm-lock.yaml
+
+# Logs
+logs/
+*.log
+pnpm-debug.log*
+
+# Node.js
+node_modules/
+
+# Build artifacts
+dist/
+dist-ssr/
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+
+# macOS
+.DS_Store
+
+# Sass module declaration files
+*.module.sass.d.ts
+*.module.scss.d.ts
