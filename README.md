@@ -4,7 +4,7 @@ This is a 2048 mini web game made with React + TypeScript + Vite.
 
 ## Game Preview
 
-[2048.terrylog.cn](https:/2048.terrylog.cn/)
+[2048.terrylog.cn](https://2048.terrylog.cn/)
 
 ## Before using this template
 
