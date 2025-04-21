@@ -7,7 +7,7 @@ export const App: FC = () => {
       <Game2048 />
       <div className="mt-16 text-center text-sm text-gray-600">
         <div>Made with 💔 by Terry Deng & Cursor</div>
-        <div>2048. All rights reserved.</div>
+        <div>A 2048 Game using React + TypeScript + Vite</div>
       </div>
     </div>
   );
