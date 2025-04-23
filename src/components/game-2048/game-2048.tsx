@@ -35,12 +35,14 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
 
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
     const touch = e.touches[0];
+    if (!touch) return;
     touchStart.current = { x: touch.clientX, y: touch.clientY };
   };
 
   const handleTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
     if (!touchStart.current) return;
     const touch = e.changedTouches[0];
+    if (!touch) return;
     const dx = touch.clientX - touchStart.current.x;
     const dy = touch.clientY - touchStart.current.y;
     const absDx = Math.abs(dx);
@@ -105,7 +107,11 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
       <div
         ref={containerRef}
         className="relative w-full"
-        style={{ maxWidth: `${BOARD_SIZE}px`, touchAction: 'none' }}
+        style={{
+          maxWidth: `${BOARD_SIZE}px`,
+          touchAction: 'none',
+          overscrollBehavior: 'none',
+        }}
         onTouchStart={handleTouchStart}
         onTouchMove={(e) => e.preventDefault()}
         onTouchEnd={handleTouchEnd}
@@ -115,6 +121,8 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
           style={{
             width: `${BOARD_SIZE * scale}px`,
             height: `${BOARD_SIZE * scale}px`,
+            touchAction: 'none',
+            overscrollBehavior: 'none',
           }}
         >
           <div
