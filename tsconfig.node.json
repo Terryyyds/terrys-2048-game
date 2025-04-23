@@ -13,8 +13,8 @@
     "strict": true,
     "allowJs": true,
     "checkJs": true,
-    "outDir": "dist",
+    "outDir": "dist"
   },
-  "include": ["./*.ts", "./.*.ts", "./*.js", "./.*.js", "./*.mjs", "./.*.mjs"],
-  "exclude": ["src", "node_modules"],
+  "include": ["vite.config.ts", "./*.ts", "./.*.ts", "./*.js", "./.*.js", "./*.mjs", "./.*.mjs"],
+  "exclude": ["src", "node_modules"]
 }
