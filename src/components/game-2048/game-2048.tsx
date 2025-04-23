@@ -7,10 +7,15 @@ import { GameOverOverlay } from './game-over-overlay';
 import { GameWonOverlay } from './game-won-overlay';
 import { useGame2048 } from './use-game-2048';
 
-// Game constants - referenced in multiple components
-export const CELL_SIZE = 94; // Cell size
-export const GAP_SIZE = 12; // Gap between cells
-export const PADDING = 12; // Container padding
+// 根据设备宽度动态计算基础尺寸
+const BASE_CELL_SIZE = 94; // 桌面端基础格子尺寸
+const MIN_CELL_SIZE = 65; // 移动端最小格子尺寸
+export const CELL_SIZE = Math.max(
+  MIN_CELL_SIZE,
+  Math.min(BASE_CELL_SIZE, Math.floor(window.innerWidth / 5)) // 确保至少有 1/5 屏幕宽度的边距
+);
+export const GAP_SIZE = Math.max(8, Math.floor(CELL_SIZE * 0.12)); // 间距随格子大小等比缩放
+export const PADDING = Math.max(8, Math.floor(CELL_SIZE * 0.12)); // 内边距随格子大小等比缩放
 export const BOARD_SIZE = CELL_SIZE * 4 + GAP_SIZE * 3 + PADDING * 2; // Total game board size
 
 // Main Game Component
@@ -18,14 +23,36 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
   const { tiles, score, gameOver: isGameOver, won: gameWon, move, reset: newGame } = useGame2048();
   // 移动端缩放与触摸滑动支持
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const [dimensions, setDimensions] = useState({
+    scale: 1,
+    cellSize: CELL_SIZE,
+    gapSize: GAP_SIZE,
+    padding: PADDING,
+    boardSize: BOARD_SIZE,
+  });
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  // 计算基础尺寸
+  const calculateDimensions = () => {
+    const cellSize = Math.max(
+      MIN_CELL_SIZE,
+      Math.min(BASE_CELL_SIZE, Math.floor(window.innerWidth / 5))
+    );
+    const gapSize = Math.max(8, Math.floor(cellSize * 0.12));
+    const padding = Math.max(8, Math.floor(cellSize * 0.12));
+    const boardSize = cellSize * 4 + gapSize * 3 + padding * 2;
+    return { cellSize, gapSize, padding, boardSize };
+  };
 
   useLayoutEffect(() => {
     const updateScale = () => {
       if (containerRef.current) {
+        const dims = calculateDimensions();
         const { width } = containerRef.current.getBoundingClientRect();
-        setScale(Math.min(1, width / BOARD_SIZE));
+        setDimensions({
+          ...dims,
+          scale: Math.min(1, width / dims.boardSize),
+        });
       }
     };
     updateScale();
@@ -108,7 +135,7 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
         ref={containerRef}
         className="relative w-full"
         style={{
-          maxWidth: `${BOARD_SIZE}px`,
+          maxWidth: `${dimensions.boardSize}px`,
           touchAction: 'none',
           overscrollBehavior: 'none',
         }}
@@ -119,8 +146,8 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
         <div
           className="relative overflow-hidden"
           style={{
-            width: `${BOARD_SIZE * scale}px`,
-            height: `${BOARD_SIZE * scale}px`,
+            width: `${dimensions.boardSize * dimensions.scale}px`,
+            height: `${dimensions.boardSize * dimensions.scale}px`,
             touchAction: 'none',
             overscrollBehavior: 'none',
           }}
@@ -128,9 +155,9 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
           <div
             className="origin-top-left"
             style={{
-              width: `${BOARD_SIZE}px`,
-              height: `${BOARD_SIZE}px`,
-              transform: `scale(${scale})`,
+              width: `${dimensions.boardSize}px`,
+              height: `${dimensions.boardSize}px`,
+              transform: `scale(${dimensions.scale})`,
             }}
           >
             <GameBoard tiles={tiles} />
