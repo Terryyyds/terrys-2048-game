@@ -26,9 +26,9 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
       if (containerRef.current) {
         const { width } = containerRef.current.getBoundingClientRect();
         // 根据屏幕宽度设置不同的缩放比例
-        if (window.innerWidth < 400) {
+        if (window.innerWidth < 350) {
           setScale(0.5); // 超小屏幕缩放为50%
-        } else if (window.innerWidth < 500) {
+        } else if (window.innerWidth < 450) {
           setScale(0.75);
         } else {
           setScale(Math.min(1, width / BOARD_SIZE));
