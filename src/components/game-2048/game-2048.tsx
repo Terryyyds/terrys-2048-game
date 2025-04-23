@@ -7,15 +7,10 @@ import { GameOverOverlay } from './game-over-overlay';
 import { GameWonOverlay } from './game-won-overlay';
 import { useGame2048 } from './use-game-2048';
 
-// 根据设备宽度动态计算基础尺寸
-const BASE_CELL_SIZE = 94; // 桌面端基础格子尺寸
-const MIN_CELL_SIZE = 65; // 移动端最小格子尺寸
-export const CELL_SIZE = Math.max(
-  MIN_CELL_SIZE,
-  Math.min(BASE_CELL_SIZE, Math.floor(window.innerWidth / 5)) // 确保至少有 1/5 屏幕宽度的边距
-);
-export const GAP_SIZE = Math.max(8, Math.floor(CELL_SIZE * 0.12)); // 间距随格子大小等比缩放
-export const PADDING = Math.max(8, Math.floor(CELL_SIZE * 0.12)); // 内边距随格子大小等比缩放
+// Game constants - referenced in multiple components
+export const CELL_SIZE = 94; // Cell size
+export const GAP_SIZE = 12; // Gap between cells
+export const PADDING = 12; // Container padding
 export const BOARD_SIZE = CELL_SIZE * 4 + GAP_SIZE * 3 + PADDING * 2; // Total game board size
 
 // Main Game Component
@@ -23,36 +18,21 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
   const { tiles, score, gameOver: isGameOver, won: gameWon, move, reset: newGame } = useGame2048();
   // 移动端缩放与触摸滑动支持
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({
-    scale: 1,
-    cellSize: CELL_SIZE,
-    gapSize: GAP_SIZE,
-    padding: PADDING,
-    boardSize: BOARD_SIZE,
-  });
+  const [scale, setScale] = useState(1);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
-
-  // 计算基础尺寸
-  const calculateDimensions = () => {
-    const cellSize = Math.max(
-      MIN_CELL_SIZE,
-      Math.min(BASE_CELL_SIZE, Math.floor(window.innerWidth / 5))
-    );
-    const gapSize = Math.max(8, Math.floor(cellSize * 0.12));
-    const padding = Math.max(8, Math.floor(cellSize * 0.12));
-    const boardSize = cellSize * 4 + gapSize * 3 + padding * 2;
-    return { cellSize, gapSize, padding, boardSize };
-  };
 
   useLayoutEffect(() => {
     const updateScale = () => {
       if (containerRef.current) {
-        const dims = calculateDimensions();
         const { width } = containerRef.current.getBoundingClientRect();
-        setDimensions({
-          ...dims,
-          scale: Math.min(1, width / dims.boardSize),
-        });
+        // 根据屏幕宽度设置不同的缩放比例
+        if (window.innerWidth < 400) {
+          setScale(0.5); // 超小屏幕缩放为50%
+        } else if (window.innerWidth < 500) {
+          setScale(0.75);
+        } else {
+          setScale(Math.min(1, width / BOARD_SIZE));
+        }
       }
     };
     updateScale();
@@ -133,9 +113,9 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
       <GameHeader score={score} bestScore={bestScore} onNewGameClick={newGame} className="mb-16" />
       <div
         ref={containerRef}
-        className="relative w-full"
+        className="relative w-full flex justify-center"
         style={{
-          maxWidth: `${dimensions.boardSize}px`,
+          maxWidth: `${BOARD_SIZE}px`,
           touchAction: 'none',
           overscrollBehavior: 'none',
         }}
@@ -144,10 +124,10 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className="relative overflow-hidden"
+          className="relative overflow-hidden mx-auto"
           style={{
-            width: `${dimensions.boardSize * dimensions.scale}px`,
-            height: `${dimensions.boardSize * dimensions.scale}px`,
+            width: `${BOARD_SIZE * scale}px`,
+            height: `${BOARD_SIZE * scale}px`,
             touchAction: 'none',
             overscrollBehavior: 'none',
           }}
@@ -155,9 +135,9 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
           <div
             className="origin-top-left"
             style={{
-              width: `${dimensions.boardSize}px`,
-              height: `${dimensions.boardSize}px`,
-              transform: `scale(${dimensions.scale})`,
+              width: `${BOARD_SIZE}px`,
+              height: `${BOARD_SIZE}px`,
+              transform: `scale(${scale})`,
             }}
           >
             <GameBoard tiles={tiles} />
