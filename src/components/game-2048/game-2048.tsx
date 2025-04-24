@@ -80,21 +80,25 @@ export const Game2048: FC<{ className?: string }> = ({ className }) => {
         case 'ArrowUp':
         case 'w':
         case 'W':
+          e.preventDefault();
           move('up');
           break;
         case 'ArrowDown':
         case 's':
         case 'S':
+          e.preventDefault();
           move('down');
           break;
         case 'ArrowLeft':
         case 'a':
         case 'A':
+          e.preventDefault();
           move('left');
           break;
         case 'ArrowRight':
         case 'd':
         case 'D':
+          e.preventDefault();
           move('right');
           break;
         default:

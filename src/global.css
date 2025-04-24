@@ -28,6 +28,66 @@ body {
   padding-bottom: calc(env(safe-area-inset-bottom) + 2rem);
   min-width: 350px;
   overflow-x: auto;
+  overflow-y: auto;
+  /* Firefox */
+  scrollbar-width: none;
+  /* IE 10+ */
+  -ms-overflow-style: none;
+}
+
+/* Hide scrollbars in WebKit browsers for html and body */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+/* Hide scrollbars in WebKit browsers globally */
+::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+  display: none !important;
+}
+::-webkit-scrollbar-thumb {
+  background: transparent !important;
+}
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+/* Hide scrollbars globally for all elements */
+* {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE10+ */
+}
+*::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+  display: none !important;
+}
+*::-webkit-scrollbar-thumb {
+  background: transparent !important;
+}
+*::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+/* 针对 Chrome、Safari、Edge Chromium 隐藏滚动条（保留可滚动性） */
+@supports (-webkit-appearance: none) {
+  *::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: transparent !important;
+    display: none !important;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent !important;
+    display: none !important;
+  }
 }
 
 a {
@@ -40,4 +100,88 @@ a {
       color: #535bf2;
     }
   }
+}
+
+/* 最终强制隐藏垂直滚动条，同时保留滚动功能 */
+/* 针对 IE、Edge (10+) 和 Firefox */
+html, body {
+  -ms-overflow-style: none !important; /* IE 和 Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}
+
+/* 针对 Chrome、Safari 和 Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* 最终滚动条隐藏规则（保留可滚动性） */
+html {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important;    /* Firefox */
+  overflow-y: auto !important;
+}
+html::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+/* 最终隐藏垂直滚动条（保留可滚动性） */
+html, body {
+  overflow-y: auto !important;
+  /* IE 和 Edge */
+  -ms-overflow-style: none !important;
+  /* Firefox */
+  scrollbar-width: none !important;
+}
+
+/* WebKit 浏览器（Chrome、Safari、Edge Chromium） */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+/* 简洁高优先级：隐藏滚动条，保留滚动功能 */
+body {
+  overflow-y: auto !important;
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;     /* Firefox */
+}
+body::-webkit-scrollbar {
+  display: none !important;            /* Chrome, Safari, Opera */
+}
+
+/* 最终覆盖：隐藏垂直滚动条，保留可滚动功能 */
+html, body {
+  overflow-y: auto !important;
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important;    /* Firefox */
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;           /* Chrome, Safari, Opera */
+}
+
+/* Chrome 中隐藏垂直滚动条 - 优先覆盖 */
+html, body {
+  overflow-y: auto !important;
+}
+html::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+}
+html::-webkit-scrollbar:vertical {
+  width: 0px !important;
+}
+html::-webkit-scrollbar-thumb {
+  background: transparent !important;
+}
+html::-webkit-scrollbar-track {
+  background: transparent !important;
 }
