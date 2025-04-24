@@ -6,6 +6,8 @@ This is a 2048 mini web game made with React + TypeScript + Vite.
 
 [2048.terrylog.cn](https://2048.terrylog.cn/)
 
+Here you can read my develop [blog post](https://terrylog.cn/posts/terrys-2048-Game).
+
 ## Before using this template
 
 Use `npm-check-updates` to update the dependencies to the latest versions.
