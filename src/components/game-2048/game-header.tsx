@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { AnimatePresence, motion, useSpring, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useSpring, useTransform, useWillChange } from 'framer-motion';
 import { FC, useEffect, useRef, useState } from 'react';
 import { NewGameButton } from './new-game-button.tsx';
 
@@ -11,10 +11,17 @@ interface GameHeaderProps {
 }
 
 export const GameHeader: FC<GameHeaderProps> = ({ score, bestScore, onNewGameClick, className }) => {
-  const scoreMotion = useSpring(0, { stiffness: 100, damping: 30 });
+  const scoreMotion = useSpring(0, { 
+    stiffness: 100, 
+    damping: 30,
+    restSpeed: 0.001,
+    restDelta: 0.001
+  });
   const displayScore = useTransform(scoreMotion, (value) => Math.round(value));
   const prevScore = useRef(score);
   const [scoreDiff, setScoreDiff] = useState(0);
+  
+  const willChange = useWillChange();
 
   useEffect(() => {
     if (score > prevScore.current) {
@@ -28,7 +35,12 @@ export const GameHeader: FC<GameHeaderProps> = ({ score, bestScore, onNewGameCli
     <div className={cn('flex w-full justify-between', className)}>
       <div className={cn('relative flex flex-col items-center rounded-lg bg-gray-200 px-4 py-2 w-[100px]')}>
         <div className={cn('text-sm text-black')}>Score</div>
-        <motion.div className={cn('text-xl font-bold text-black')}>{displayScore}</motion.div>
+        <motion.div 
+          className={cn('text-xl font-bold text-black')}
+          style={{ willChange }}
+        >
+          {displayScore}
+        </motion.div>
         <AnimatePresence>
           {scoreDiff > 0 && (
             <motion.div
@@ -36,6 +48,11 @@ export const GameHeader: FC<GameHeaderProps> = ({ score, bestScore, onNewGameCli
               initial={{ opacity: 0, y: 0 }}
               animate={{ opacity: 1, y: -20 }}
               exit={{ opacity: 0 }}
+              transition={{
+                duration: 0.3,
+                syncDriver: true
+              }}
+              style={{ willChange }}
               className={cn('absolute -top-2 text-sm font-bold text-green-600')}
               onAnimationComplete={() => setScoreDiff(0)}
             >
