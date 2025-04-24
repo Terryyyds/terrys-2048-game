@@ -23,7 +23,9 @@
 
 body {
   margin: 0;
-  padding: 0;
+  background: linear-gradient(to bottom right, #FCE7F3, #FBCFE8);
+  padding-top: calc(env(safe-area-inset-top) + 2rem);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 2rem);
   min-width: 350px;
   overflow-x: auto;
 }
