@@ -44,7 +44,7 @@ export const GameHeader: FC<GameHeaderProps> = ({ score, bestScore, onNewGameCli
           )}
         </AnimatePresence>
       </div>
-      <NewGameButton onClick={onNewGameClick} className={'h-[68px] flex items-center'} />
+      <NewGameButton onClick={onNewGameClick} className={'h-[60px] flex items-center'} />
       <div className={cn('flex flex-col items-center rounded-lg bg-gray-200 px-4 py-2 w-[100px]')}>
         <div className={cn('text-sm text-black')}>Best</div>
         <div className={cn('text-xl font-bold text-black')}>{bestScore}</div>
