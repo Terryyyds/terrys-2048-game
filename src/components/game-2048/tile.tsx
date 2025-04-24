@@ -1,5 +1,5 @@
 import { cn } from '@/utils/cn';
-import { motion, useWillChange } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FC } from 'react';
 
 // Position type
@@ -79,9 +79,6 @@ export const Tile: FC<TileProps> = ({ value, row, col, isNew, previousPosition }
   const bgColor = bgColorMap[value] ?? 'bg-stone-100';
   const textColor = textColorMap[value] ?? 'text-stone-800';
   const fontSize = fontSizeMap[value] ?? 'text-4xl';
-  
-  // 使用willChange属性优化动画性能
-  const willChange = useWillChange();
 
   // Calculate current position and previous position (raw numbers without px unit)
   const currentPosition = calculatePosition(row, col);
@@ -95,7 +92,6 @@ export const Tile: FC<TileProps> = ({ value, row, col, isNew, previousPosition }
       style={{
         width: CELL_SIZE,
         height: CELL_SIZE,
-        willChange,
       }}
       initial={{
         top: prevPosition.top,
@@ -114,13 +110,6 @@ export const Tile: FC<TileProps> = ({ value, row, col, isNew, previousPosition }
         stiffness: 300,
         damping: 25,
         duration: 0.15,
-        // 设置为true以确保在高刷新率设备上动画更流畅
-        // 通过与设备刷新率同步，而不是固定帧率
-        syncDriver: true,
-        // 对于支持120Hz的设备，降低阻尼以获得更流畅的动画效果
-        // 仍然保持视觉效果一致
-        restSpeed: 0.001,
-        restDelta: 0.001,
       }}
     >
       {value}
