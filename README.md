@@ -2,11 +2,16 @@
 
 This is a 2048 mini web game made with React + TypeScript + Vite.
 
+
 ## Game Preview
 
 [2048.terrylog.cn](https://2048.terrylog.cn/)
 
+## Develop Post
+
 Here you can read my develop [blog post](https://terrylog.cn/posts/terrys-2048-Game).
+
+<img width="432" height="600" alt="image" src="https://github.com/user-attachments/assets/026587f3-b863-4a40-b8e4-f364e427e8ef" />
 
 ## Before using this template
 
